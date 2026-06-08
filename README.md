@@ -1,48 +1,203 @@
-# Printease
+# PrintEase
 
-A minimalist, dark-mode print-order web app with tracking and admin status updates. Built to keep the flow fast for students and print shops: upload, estimate, submit, track.
+A clean, fast print-order app built for students and print shops. Upload files, get instant quotes, track your order.
 
-## Live Demo
-`https://printease-repo.vercel.app`
+**Live**: [https://printease-mu.vercel.app](https://printease-mu.vercel.app)  
+**Admin**: [https://printease-mu.vercel.app/admin.html](https://printease-mu.vercel.app/admin.html)
 
-## Why This Exists
-Print ordering is usually slow and messy: uploads are scattered, totals are unclear, and customers can�t track progress. Printease was created to fix that with a single clean flow and a lightweight backend that can run anywhere.
+## The Problem
+
+Ordering prints sucks. Files get lost in emails. Pricing is confusing. You never know when your stuff will be ready.
+
+PrintEase fixes this: one place to upload, one tracking code, real-time updates.
+
+## What It Does
+
+**For Customers:**
+- Upload PDFs, docs, images
+- See price instantly
+- Get a tracking code
+- Check status anytime
+
+**For Admins:**
+- See all orders
+- Update status
+- Track revenue
+- Manage everything
+
+## Pricing
+
+| Type | Cost | Speed |
+|------|------|-------|
+| Same-day pickup | ₹2/page | < 4 hrs |
+| Next-day delivery | ₹3/page | 6-12 hrs |
+| Bulk (5K+ pages) | Custom | Custom |
+
+## Setup Local
+
+```bash
+# Clone
+git clone https://github.com/omb-11/printease.git
+cd printease
+
+# Virtual env
+python -m venv .venv
+source .venv/bin/activate  # Windows: .\.venv\Scripts\Activate.ps1
+
+# Install & run
+pip install -r requirements.txt
+python api/index.py
+```
+
+Open http://localhost:5000
+
+## Deploy on Vercel
+
+1. Push to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Click "New Project"
+4. Select your repo
+5. Click "Deploy"
+
+Done. Your app goes live automatically.
+
+## API
+
+### Create Order
+```bash
+POST /api/orders
+Content-Type: multipart/form-data
+
+customer_name=John&email=john@example.com&phone=9876543210&total_pages=50&files=file.pdf
+```
+
+### Track Order
+```bash
+GET /api/orders/track/PRINT12345678
+```
+
+### Admin Login
+```bash
+POST /api/admin/login
+{
+  "username": "admin",
+  "password": "printease123"
+}
+```
+
+## Tech Stack
+
+- **Frontend**: HTML, CSS, Vanilla JS
+- **Backend**: Flask 3.1
+- **Database**: SQLite
+- **Hosting**: Vercel (serverless)
+
+## File Types
+
+Supported: PDF, DOCX, PPT, PNG, JPG, ZIP (max 100MB each)
+
+## Admin Dashboard
+
+Go to `/admin.html`
+
+**Login:**
+- Username: `admin`
+- Password: `printease123`
+
+**Features:**
+- View all orders
+- Search by code/name/email
+- Update order status
+- Delete orders
+- See stats (total orders, revenue, pending, delivered)
+
+## Order Statuses
+
+- Pending
+- Processing
+- Ready for Pickup
+- Shipped
+- Delivered
+- Cancelled
 
 ## How It Works
-- The user fills details, selects print options, uploads files, and sets copies/pages per file.
-- The backend calculates totals and generates a tracking code.
-- The order is saved in SQLite with status set to `Pending`.
-- Admins update status in the dashboard; users track by code or phone/email.
 
-## Key Features
-- Multi-file uploads with per-file copies/pages
-- Instant price estimate
-- Tracking codes and order status
-- Admin dashboard with search, CSV export, and status updates
-- Minimalist dark UI with zero rounded corners
+1. Customer uploads files
+2. Backend estimates pages
+3. Price calculated instantly
+4. Order saved with tracking code
+5. Customer gets code
+6. Admin can update status
+7. Customer tracks by code
 
-## Challenges Solved
-- Reliable file handling with safe filenames and clean downloads
-- Consistent pricing across frontend and backend
-- Status + tracking added without breaking existing data via a migration step
-- Vercel serverless support (ephemeral storage handled with temp paths)
+## Folder Structure
 
-## Local Run
-```powershell
-cd C:\Users\butem\Desktop\CODES\printease-repo\PRINT.apk
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python backendlogic.py
 ```
-Open `http://127.0.0.1:5000`.
-
-## Deploy (Vercel)
-```powershell
-cd C:\Users\butem\Desktop\CODES\printease-repo
-vercel --prod --yes
+printease/
+├── api/index.py          # Flask backend
+├── assets/
+│   ├── app.js           # Customer frontend
+│   └── admin.js         # Admin dashboard
+├── index.html           # Customer page
+├── admin.html           # Admin page
+├── styles.css           # Styling
+├── README.md            # This file
+├── requirements.txt     # Python deps
+├── vercel.json          # Vercel config
+└── .gitignore           # Git ignore
 ```
 
-## Notes
-- Vercel�s filesystem is ephemeral. SQLite data resets on cold starts.
-- For production persistence, use a managed database and update `DB_NAME` in `PRINT.apk/backendlogic.py`.
+## Running Locally
+
+```bash
+python api/index.py
+```
+
+Visit `http://localhost:5000`
+
+Test admin at `http://localhost:5000/admin.html`
+
+## Credentials
+
+**Admin (default - change in production!):**
+- Username: `admin`
+- Password: `printease123`
+
+## Common Issues
+
+**Files not uploading?**
+- Check file type (PDF, DOC, IMG only)
+- Max 100MB per file
+- Check connection
+
+**Price not calculating?**
+- Refresh page
+- Check console for errors
+- Backend running?
+
+**Admin login fails?**
+- Clear cache
+- Check credentials
+- Backend running?
+
+**Order not found?**
+- Double-check tracking code
+- Database exists?
+- Backend logs?
+
+## Future
+
+Stuff we might add:
+- Payment processing
+- SMS notifications
+- Bulk order API
+- Analytics
+- Multi-language
+
+## License
+
+MIT - use however you want
+
+---
+
+Made by PrintEase team. Questions? Check GitHub issues.
